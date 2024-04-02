@@ -1,0 +1,30 @@
+# @name auth
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+###
+@accessToken = {{auth.response.body.token}}
+###
+
+# @name newContent
+POST http://localhost:3000/api/contents
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "title": "New Content",
+    "content": "This is a new content"
+}
+
+###
+@contentId = {{newContent.response.body.content._id}}
+###
+
+# @name updateContent
+DELETE http://localhost:3000/api/contents/{{contentId}}
+Authorization: Bearer {{accessToken}}

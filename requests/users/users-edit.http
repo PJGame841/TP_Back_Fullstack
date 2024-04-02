@@ -1,0 +1,31 @@
+# @name auth
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+###
+@accessToken = {{auth.response.body.token}}
+###
+
+# @name getUserId
+GET http://localhost:3000/api/users
+Authorization: Bearer {{accessToken}}
+
+###
+@userId = {{getUserId.response.body.2._id}}
+###
+
+# @name updateUser
+PUT http://localhost:3000/api/users/{{userId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "username": "newLecteur",
+    "password": "newPassword",
+    "role": "lecteur"
+}
